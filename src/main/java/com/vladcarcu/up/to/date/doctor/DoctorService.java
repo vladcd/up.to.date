@@ -40,7 +40,7 @@ public class DoctorService {
         doctorRepository.saveAll(doctors);
     }
 
-    // TODO: TOP 5
+    // TODO: TOP 6
     public List<Doctor> findTopAndBottomPerformers() {
         List<Doctor> allDoctors = doctorRepository.findAll();
         List<Doctor> topPerformers = allDoctors.stream()

@@ -61,7 +61,7 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
-    // TODO: TOP 6
+    // TODO: TOP 5
     public Optional<Appointment> nextFreeSlot(Integer doctorId, LocalDateTime initialDate) {
         // the doctor will work with 30 minute slots, from 9 to 5, Monday to Friday
         Doctor doctor = doctorService.findById(doctorId).orElseThrow(NoSuchElementException::new);
