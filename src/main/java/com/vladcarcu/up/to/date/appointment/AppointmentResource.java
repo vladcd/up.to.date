@@ -2,11 +2,11 @@ package com.vladcarcu.up.to.date.appointment;
 
 import com.vladcarcu.up.to.date.common.mappers.AppointmentMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static java.util.stream.Collectors.toList;
 
@@ -43,6 +43,12 @@ public class AppointmentResource {
     public AppointmentDTO getNextAvailableSlot(@PathVariable("id") Integer doctorId) {
         return appointmentService.nextFreeSlot(doctorId, LocalDateTime.now())
                 .map(appointmentMapper::toDTO)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void cancelAppointment(@PathVariable("id") Integer id) {
+        appointmentService.cancelAppointment(id);
     }
 }

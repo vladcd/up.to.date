@@ -16,11 +16,15 @@ import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AppointmentService {
+
+    private static final Logger LOGGER = Logger.getLogger(AppointmentService.class.getName());
 
     public static final int START_HOUR = 9;
     public static final int MAX_SLOTS = 16;
@@ -95,6 +99,12 @@ public class AppointmentService {
                     return doctor;
                 }).collect(Collectors.toList());
         doctorService.updateAll(updatedDoctors);
+    }
+
+    // TODO: TOP 8
+    public void cancelAppointment(Integer id) {
+        appointmentRepository.findById(id).ifPresentOrElse(appointmentRepository::delete,
+                () -> LOGGER.log(Level.INFO, "A user tried to delete appointment with id {}, although it doesn't exist", id));
     }
 
     private Predicate<LocalDateTime> slotIsAvailablePredicate(List<Appointment> upcomingAppointments) {

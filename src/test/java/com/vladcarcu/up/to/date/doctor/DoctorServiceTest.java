@@ -28,15 +28,19 @@ public class DoctorServiceTest {
     // TODO: TOP 9
     @Test
     public void findTopAndBottomPerformers_whenOk_thenVerifyCall() {
-        Doctor topPerformer = mock(Doctor.class);
-        when(topPerformer.getPopularity()).thenReturn(Popularity.STAR);
-        Doctor regularPerformer = mock(Doctor.class);
-        Doctor bottomPerformer = mock(Doctor.class);
-        when(bottomPerformer.getPopularity()).thenReturn(Popularity.UNKNOWN);
+        Doctor topPerformer = mockDoctor(Popularity.STAR);
+        Doctor regularPerformer = mockDoctor(Popularity.REGULAR);
+        Doctor bottomPerformer = mockDoctor(Popularity.UNKNOWN);
 
-        when(doctorRepository.findAll()).thenReturn(Arrays.asList(topPerformer, regularPerformer, bottomPerformer));
+        when(doctorRepository.findAll()).thenReturn(List.of(topPerformer, regularPerformer, bottomPerformer));
 
         List<Doctor> doctors = doctorService.findTopAndBottomPerformers();
         assertEquals(2, doctors.size());
+    }
+
+    private Doctor mockDoctor(Popularity popularity) {
+        Doctor bottomPerformer = mock(Doctor.class);
+        when(bottomPerformer.getPopularity()).thenReturn(popularity);
+        return bottomPerformer;
     }
 }
