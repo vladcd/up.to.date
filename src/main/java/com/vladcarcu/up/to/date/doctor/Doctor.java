@@ -20,4 +20,12 @@ public class Doctor extends User {
 
     @Enumerated(EnumType.STRING)
     private Popularity popularity = Popularity.UNKNOWN;
+
+    public boolean isStar() {
+        return popularity.equals(Popularity.STAR);
+    }
+
+    public boolean isUnknown() {
+        return popularity.equals(Popularity.UNKNOWN);
+    }
 }

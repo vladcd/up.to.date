@@ -4,10 +4,11 @@ import com.vladcarcu.up.to.date.common.model.Popularity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 @Service
 @RequiredArgsConstructor
@@ -42,15 +43,14 @@ public class DoctorService {
 
     // TODO: TOP 6
     public List<Doctor> findTopAndBottomPerformers() {
-        List<Doctor> allDoctors = doctorRepository.findAll();
-        List<Doctor> topPerformers = allDoctors.stream()
-                .filter(doctor -> doctor.getPopularity().equals(Popularity.STAR))
-                .collect(Collectors.toList());
-        List<Doctor> bottomPerformers = allDoctors.stream()
-                .filter(doctor -> doctor.getPopularity().equals(Popularity.UNKNOWN))
-                .collect(Collectors.toList());
-        List<Doctor> result = new ArrayList<>(topPerformers);
-        result.addAll(bottomPerformers);
-        return result;
+        return doctorRepository.findAll().stream()
+                .collect(teeing(
+                        filtering(Doctor::isStar, toList()),
+                        filtering(Doctor::isUnknown, toList()),
+                        (listOfPopular, listOfUnknown) -> {
+                            listOfPopular.addAll(listOfUnknown);
+                            return listOfPopular;
+                        }
+                ));
     }
 }

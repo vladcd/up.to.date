@@ -11,25 +11,22 @@ public class ClientMapper {
 
     // TODO: TOP 4
     public ClientDTO toDTO(User user) {
-        ClientDTO.ClientDTOBuilder builder = ClientDTO.builder()
-                .id(user.getId())
-                .username(user.getUsername());
-        if (user instanceof Client) {
-            Client client = (Client) user;
-            builder.name(client.getName());
-        } else if (user instanceof Doctor) {
-            Doctor doctor = (Doctor) user;
-            builder.name(doctor.getName());
+        String name = null;
+        if (user instanceof Client client) {
+            name = client.getName();
+        } else if (user instanceof Doctor doctor) {
+            name = doctor.getName();
         }
-        return builder.build();
+
+        return new ClientDTO(user.getId(), user.getUsername(), user.getPassword(), name);
     }
 
     public Client toClient(ClientDTO clientDTO) {
         Client client = new Client();
-        client.setId(clientDTO.getId());
-        client.setUsername(clientDTO.getUsername());
-        client.setPassword(clientDTO.getPassword());
-        client.setName(clientDTO.getName());
+        client.setId(clientDTO.id());
+        client.setUsername(clientDTO.username());
+        client.setPassword(clientDTO.password());
+        client.setName(clientDTO.name());
         return client;
     }
 

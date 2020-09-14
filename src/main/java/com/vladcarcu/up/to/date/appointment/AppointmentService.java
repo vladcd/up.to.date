@@ -68,9 +68,9 @@ public class AppointmentService {
     // TODO: TOP 5
     public Optional<Appointment> nextFreeSlot(Integer doctorId, LocalDateTime initialDate) {
         // the doctor will work with 30 minute slots, from 9 to 5, Monday to Friday
-        Doctor doctor = doctorService.findById(doctorId).orElseThrow(NoSuchElementException::new);
-        List<LocalDateTime> possibleDates = buildPossibleSlots(initialDate);
-        List<Appointment> upcomingAppointments = upcomingAppointments(doctorId);
+        var doctor = doctorService.findById(doctorId).orElseThrow(NoSuchElementException::new);
+        var possibleDates = buildPossibleSlots(initialDate);
+        var upcomingAppointments = upcomingAppointments(doctorId);
 
         return possibleDates.stream()
                 .filter(slotIsAvailablePredicate(upcomingAppointments))

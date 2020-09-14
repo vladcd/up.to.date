@@ -3,7 +3,7 @@ package com.vladcarcu.up.to.date.common.mappers;
 import com.vladcarcu.up.to.date.common.model.Popularity;
 import com.vladcarcu.up.to.date.doctor.Doctor;
 import com.vladcarcu.up.to.date.doctor.DoctorDTO;
-import org.apache.logging.log4j.util.Strings;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -19,31 +19,28 @@ public interface DoctorMapper {
 
     // TODO: TOP 2
     default String toPopularityString(Popularity popularity) {
-        switch (popularity) {
-            case UNKNOWN:
-                return "Newcomer";
-            case REGULAR:
-                return capitalize(popularity.toString());
-            case STAR:
-                return "All Star";
-        }
-        return Strings.EMPTY;
+        return switch (popularity) {
+            case UNKNOWN -> "Newcomer";
+            case REGULAR -> capitalize(popularity.toString());
+            case STAR -> "All Star";
+        };
     }
 
     default Popularity toPopularity(String popularity) {
-        switch (popularity) {
+        return switch (popularity) {
             case "Newcomer":
-                return Popularity.UNKNOWN;
+                yield Popularity.UNKNOWN;
             case "Regular":
-                return Popularity.REGULAR;
+                yield Popularity.REGULAR;
             case "All Star":
-                return Popularity.STAR;
-        }
-        return null;
+                yield Popularity.STAR;
+            default:
+                yield null;
+        };
     }
 
-    // TODO: top 7
-    default String capitalize(String input) {
+    // TODO: TOP 7
+    private String capitalize(String input) {
         String lowercase = input.toLowerCase();
         return new StringBuilder()
                 .append(lowercase.substring(0, 1).toUpperCase())

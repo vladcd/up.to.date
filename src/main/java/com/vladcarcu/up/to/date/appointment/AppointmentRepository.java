@@ -14,7 +14,13 @@ import java.util.Optional;
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
 
     // TODO: TOP 3
-    @Query("select a from Appointment a where a.client=:client and a.startDate > current_timestamp and a.startDate <= :limit")
+    @Query("""
+            select a 
+            from Appointment a 
+            where a.client=:client 
+            and a.startDate > current_timestamp 
+            and a.startDate <= :limit
+            """)
     List<Appointment> upcomingAppointments(User client, LocalDateTime limit);
 
     @Query("select a from Appointment a where a.doctor=:doctor and a.startDate > current_timestamp and a.startDate <= :limit")
