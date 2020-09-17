@@ -42,7 +42,7 @@ public interface DoctorMapper {
         return null;
     }
 
-    // TODO: top 7
+    // TODO: TOP 7
     default String capitalize(String input) {
         String lowercase = input.toLowerCase();
         return new StringBuilder()
